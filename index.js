@@ -16,6 +16,11 @@ mongoose.connect(process.env.MONGO_URI)
 const jobRoutes = require("./routes/jobRoutes");
 app.use("/api/jobs", jobRoutes);
 
+// ✅ Add root route
+app.get('/', (req, res) => {
+  res.send('🎯 Job Tracker API is running');
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
