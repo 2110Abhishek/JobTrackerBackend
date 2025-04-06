@@ -31,19 +31,27 @@ router.get("/", async (req, res) => {
 });
 
 // Update Job Status
-router.put("/jobs/:id", async (req, res) => {
-    try {
-      const { status } = req.body;
-      const job = await Job.findByIdAndUpdate(
-        req.params.id,
-        { status },
-        { new: true }
-      );
-      res.status(200).json(job);
-    } catch (err) {
-      res.status(500).json({ error: "Failed to update status" });
+router.put("/:id", async (req, res) => {
+  try {
+    console.log("Incoming update:", req.body, "for ID:", req.params.id);
+    const { status } = req.body;
+    const job = await Job.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
     }
-  });
+
+    res.status(200).json(job);
+  } catch (err) {
+    console.error("Update error:", err);
+    res.status(500).json({ error: "Failed to update status" });
+  }
+});
+
   
 
 // Delete Job
